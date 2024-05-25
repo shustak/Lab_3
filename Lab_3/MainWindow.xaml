@@ -1,0 +1,33 @@
+﻿<Window x:Class="GraphicsEditor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Graphics Editor" Height="450" Width="800"
+        Loaded="Window_Loaded">
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Save" Executed="Save_Executed" CanExecute="Save_CanExecute" />
+        <CommandBinding Command="ApplicationCommands.Open" Executed="Open_Executed" CanExecute="Open_CanExecute" />
+        <CommandBinding Command="ApplicationCommands.New" Executed="Clear_Executed" CanExecute="Clear_CanExecute" />
+    </Window.CommandBindings>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Save" Command="ApplicationCommands.Save" />
+                <MenuItem Header="Open" Command="ApplicationCommands.Open" />
+                <MenuItem Header="Clear" Command="ApplicationCommands.New" />
+            </MenuItem>
+            <MenuItem Header="Edit">
+                <MenuItem Header="Settings" Click="Settings_Click"/>
+            </MenuItem>
+        </Menu>
+        <ToolBar DockPanel.Dock="Top">
+            <Button Content="Save" Command="ApplicationCommands.Save"/>
+            <Button Content="Open" Command="ApplicationCommands.Open"/>
+            <Button Content="Clear" Command="ApplicationCommands.New"/>
+            <Button Content="Settings" Click="Settings_Click"/>
+        </ToolBar>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem Content="{Binding MouseCoordinates}" />
+        </StatusBar>
+        <Canvas Name="drawingArea" Background="White" MouseLeftButtonDown="Canvas_MouseLeftButtonDown"/>
+    </DockPanel>
+</Window>
