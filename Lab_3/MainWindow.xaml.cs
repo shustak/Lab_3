@@ -31,6 +31,13 @@ namespace GraphicsEditor
             CommandBindings.Add(new CommandBinding(ApplicationCommands.New, Clear_Executed, Clear_CanExecute));
         }
 
+        private void Canvas_MouseMove(object sender, MouseEventArgs e)
+        {
+            Point position = e.GetPosition(drawingArea);
+            MouseCoordinates = $"X: {position.X}, Y: {position.Y}";
+            OnPropertyChanged(nameof(MouseCoordinates));
+        }
+
         private void Canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Point position = e.GetPosition(drawingArea);
@@ -82,25 +89,28 @@ namespace GraphicsEditor
                 foreach (string line in lines)
                 {
                     string[] parts = line.Split(',');
-                    double left = double.Parse(parts[0]);
-                    double top = double.Parse(parts[1]);
-                    double width = double.Parse(parts[2]);
-                    double height = double.Parse(parts[3]);
-                    Brush stroke = (Brush)new BrushConverter().ConvertFromString(parts[4]);
-                    Brush fill = (Brush)new BrushConverter().ConvertFromString(parts[5]);
-                    double thickness = double.Parse(parts[6]);
-
-                    Rectangle rect = new Rectangle
+                    if (parts.Length == 7) // ensure correct number of parts
                     {
-                        Stroke = stroke,
-                        Fill = fill,
-                        StrokeThickness = thickness,
-                        Width = width,
-                        Height = height
-                    };
-                    Canvas.SetLeft(rect, left);
-                    Canvas.SetTop(rect, top);
-                    drawingArea.Children.Add(rect);
+                        double left = double.Parse(parts[0]);
+                        double top = double.Parse(parts[1]);
+                        double width = double.Parse(parts[2]);
+                        double height = double.Parse(parts[3]);
+                        Brush stroke = (Brush)new BrushConverter().ConvertFromString(parts[4]);
+                        Brush fill = (Brush)new BrushConverter().ConvertFromString(parts[5]);
+                        double thickness = double.Parse(parts[6]);
+
+                        Rectangle rect = new Rectangle
+                        {
+                            Stroke = stroke,
+                            Fill = fill,
+                            StrokeThickness = thickness,
+                            Width = width,
+                            Height = height
+                        };
+                        Canvas.SetLeft(rect, left);
+                        Canvas.SetTop(rect, top);
+                        drawingArea.Children.Add(rect);
+                    }
                 }
                 this.Title = ofd.FileName;
             }
@@ -131,5 +141,12 @@ namespace GraphicsEditor
                 _lineThickness = settingsWindow.LineThickness;
             }
         }
+
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(name));
+        }
+
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
     }
 }

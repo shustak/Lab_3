@@ -28,6 +28,6 @@
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem Content="{Binding MouseCoordinates}" />
         </StatusBar>
-        <Canvas Name="drawingArea" Background="White" MouseLeftButtonDown="Canvas_MouseLeftButtonDown"/>
+        <Canvas Name="drawingArea" Background="White" MouseMove="Canvas_MouseMove" MouseLeftButtonDown="Canvas_MouseLeftButtonDown"/>
     </DockPanel>
 </Window>
